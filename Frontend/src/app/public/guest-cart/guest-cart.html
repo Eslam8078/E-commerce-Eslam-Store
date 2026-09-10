@@ -1,0 +1,66 @@
+<section class="guest-cart-page">
+  <div class="page-head">
+    <div>
+      <h1>Your Cart</h1>
+      <p>Your items are saved in this browser until you sign in.</p>
+    </div>
+    <a routerLink="/products" class="continue-btn">Continue Shopping</a>
+  </div>
+
+  @if (cart.items.length === 0) {
+    <div class="empty-cart">
+      <i class="bi bi-cart3"></i>
+      <h2>Your cart is empty</h2>
+      <p>Add something you like and it will stay here.</p>
+      <a routerLink="/products" class="shop-btn">Shop Products</a>
+    </div>
+  } @else {
+    <div class="cart-layout">
+      <div class="items">
+        @for (item of cart.items; track item.productId) {
+          <article class="cart-item">
+            <a [routerLink]="['/products', item.slug]" class="thumb">
+              @if (image(item)) {
+                <img [src]="image(item)" [alt]="item.name" />
+              }
+            </a>
+
+            <div class="details">
+              <a [routerLink]="['/products', item.slug]" class="name">{{ item.name }}</a>
+              <p class="price">{{ item.price | number }} EGP</p>
+              <p class="stock">Available: {{ item.stockQuantity }}</p>
+            </div>
+
+            <div class="quantity">
+              <button type="button" (click)="updateQuantity(item, item.quantity - 1)">−</button>
+              <span>{{ item.quantity }}</span>
+              <button
+                type="button"
+                [disabled]="item.quantity >= item.stockQuantity"
+                (click)="updateQuantity(item, item.quantity + 1)"
+              >+</button>
+            </div>
+
+            <strong class="line-total">{{ item.price * item.quantity | number }} EGP</strong>
+
+            <button type="button" class="remove-btn" (click)="remove(item)" aria-label="Remove item">
+              <i class="bi bi-trash"></i>
+            </button>
+          </article>
+        }
+
+        <button type="button" class="clear-btn" (click)="clear()">Clear Cart</button>
+      </div>
+
+      <aside class="summary">
+        <h2>Order Summary</h2>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong>{{ cart.totalPrice | number }} EGP</strong>
+        </div>
+        <p>Delivery fee will be calculated at checkout.</p>
+        <button type="button" class="checkout-btn" (click)="checkout()">Login to Checkout</button>
+      </aside>
+    </div>
+  }
+</section>

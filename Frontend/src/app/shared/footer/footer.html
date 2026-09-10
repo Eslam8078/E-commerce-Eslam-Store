@@ -1,0 +1,52 @@
+<footer class="footer">
+  <div class="footer-main">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a routerLink="/" class="footer-logo">
+          <span class="logo-mark">E</span>
+          <span class="logo-text">Eslam Store</span>
+        </a>
+        <p class="footer-description">
+          Modern fashion for every season, with carefully selected pieces for you and your family.
+        </p>
+        <div class="footer-social">
+          <a routerLink="/contact" aria-label="Contact us" title="Contact us">
+            <i class="bi bi-chat-square-text"></i>
+          </a>
+          <a href="mailto:eslamaymn2412@gmail.com" aria-label="Email us" title="Email us">
+            <i class="bi bi-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h3>Shop</h3>
+        <a routerLink="/products">All Products</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Customer Care</h3>
+        <a routerLink="/faq">FAQ</a>
+        <a [routerLink]="accountLink()">My Account</a>
+        <a routerLink="/contact">Contact Us</a>
+      </div>
+
+      <div class="footer-column footer-contact">
+        <h3>Get In Touch</h3>
+        <div class="contact-item"><i class="bi bi-geo-alt"></i><span>Cairo, Egypt</span></div>
+        <div class="contact-item"><i class="bi bi-telephone"></i><span>+20 100 000 0000</span></div>
+        <div class="contact-item"><i class="bi bi-envelope"></i><span>eslamaymn2412@gmail.com</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-container">
+      <p>© {{ currentYear }} Eslam Store. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a routerLink="/privacy-policy">Privacy Policy</a>
+        <a routerLink="/terms">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>

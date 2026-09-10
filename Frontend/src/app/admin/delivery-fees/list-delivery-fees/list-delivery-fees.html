@@ -1,0 +1,47 @@
+<div class="delivery-list-page">
+  @if (errorMessage) { <div class="alert error">{{ errorMessage }}</div> }
+
+  @if (loading) {
+    <div class="loading">Loading delivery locations...</div>
+  } @else if (!locations.length) {
+    <div class="empty-state"><i class="bi bi-geo-alt"></i><h3>No delivery locations</h3><p>Add your first governorate from the Add page.</p><a routerLink="/admin/delivery-fees/add">Add Governorate</a></div>
+  } @else {
+    <div class="summary-bar"><span>{{ locations.length }} governorate{{ locations.length === 1 ? '' : 's' }}</span><a routerLink="/admin/delivery-fees/add">+ Add</a></div>
+    <div class="locations-grid">
+      @for (location of locations; track location.governorate) {
+        <article class="location-card">
+          <div class="location-head">
+            <div class="location-title"><span>Governorate</span><h3>{{ location.governorate }}</h3><small>{{ location.cities.length }} cit{{ location.cities.length === 1 ? 'y' : 'ies' }}</small></div>
+            <div class="head-actions">
+              <a [routerLink]="['/admin/delivery-fees/update', location.governorate]" class="edit-btn"><i class="bi bi-pencil-square"></i>Edit</a>
+              <button type="button" class="delete-btn" [disabled]="isDeletingGovernorate(location)" (click)="requestDeleteGovernorate(location)"><i class="bi bi-trash3"></i>{{ isDeletingGovernorate(location) ? 'Deleting...' : 'Delete' }}</button>
+            </div>
+          </div>
+
+          <div class="city-list">
+            @for (city of location.cities; track city.name) {
+              <div class="city-row">
+                <span class="city-name"><i class="bi bi-pin-map"></i>{{ city.name }}</span>
+                <span class="fee">{{ city.fee | number:'1.0-2' }} EGP</span>
+                <button type="button" class="city-delete" [disabled]="isDeletingCity(location, city)" (click)="requestDeleteCity(location, city)" title="Delete city"><i class="bi bi-trash3"></i></button>
+              </div>
+            } @empty {
+              <div class="no-cities">No cities yet.</div>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  [title]="pendingDelete?.type === 'governorate' ? 'Delete governorate' : 'Delete city'"
+  [message]="pendingDelete?.type === 'governorate' ? 'Delete this governorate and all of its cities?' : 'Delete this city from delivery fees?'"
+  confirmText="Delete"
+  cancelText="Cancel"
+  [danger]="true"
+  (confirmed)="confirmDelete()"
+  (cancelled)="closeConfirm()"
+/>

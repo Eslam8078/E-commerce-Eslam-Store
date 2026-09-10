@@ -1,0 +1,108 @@
+<section class="details-page">
+  @if (isLoading) {
+    <div class="details-state">
+      <span class="loading-dot"></span>
+      <p>Loading product...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="details-state error-state">
+      <p>{{ errorMessage }}</p>
+      <a routerLink="/products" class="back-link">← Back to products</a>
+    </div>
+  } @else if (product) {
+    <div class="product-details">
+      <div class="gallery">
+        <div class="main-image">
+          @if (activeImage) {
+            <img [src]="activeImage" [alt]="product.name" />
+          }
+        </div>
+
+        @if (product.images.length > 1) {
+          <div class="thumbs">
+            @for (img of product.images; track img) {
+              <button
+                type="button"
+                class="thumb-button"
+                [class.active]="activeImage === image(img)"
+                (click)="activeImage = image(img)"
+              >
+                <img [src]="image(img)" [alt]="product.name" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="info">
+        <a routerLink="/products" class="back-link">← Back to products</a>
+        <span class="eyebrow">Seasonal collection</span>
+        <h1>{{ product.name }}</h1>
+        <p class="category">{{ categoryName() }} · {{ product.season }}</p>
+        <p class="price">{{ product.price | number }} EGP</p>
+
+        <p class="stock" [class.low]="product.stockQuantity < 5">
+          {{ product.stockQuantity > 0 ? product.stockQuantity + ' in stock' : 'Out of stock' }}
+        </p>
+
+        <p class="description">{{ product.description }}</p>
+
+        @if (product.stockQuantity > 0) {
+          <div class="purchase-row">
+            <div class="qty-selector" aria-label="Quantity selector">
+              <button type="button" [disabled]="quantity <= 1" (click)="decreaseQty()">−</button>
+              <span>{{ quantity }}</span>
+              <button type="button" [disabled]="quantity >= product.stockQuantity" (click)="increaseQty()">+</button>
+            </div>
+
+            <button type="button" class="add-btn" [disabled]="isAdding" (click)="addToCart()">
+              {{ isAdding ? 'Adding...' : 'Add to Cart' }}
+            </button>
+          </div>
+        }
+
+        @if (addMessage) {
+          <div class="feedback success">{{ addMessage }}</div>
+        }
+
+        @if (errorMessage) {
+          <div class="feedback error-message">{{ errorMessage }}</div>
+        }
+      </div>
+    </div>
+
+    @if (product.relatedProducts?.length) {
+      <section class="related-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">You may also like</span>
+            <h2>Related Products</h2>
+          </div>
+        </div>
+
+        <div class="related-grid">
+          @for (related of product.relatedProducts; track related._id) {
+            <a [routerLink]="['/products', related.slug]" class="related-card">
+              <div class="related-image">
+                @if (image(related.images?.[0])) {
+                  <img [src]="image(related.images?.[0])" [alt]="related.name" />
+                }
+              </div>
+              <div class="related-body">
+                <h3>{{ related.name }}</h3>
+                <div class="related-meta">
+                  <span>{{ related.price | number }} EGP</span>
+                  @if (related.stockQuantity > 0) {
+                    <span>In stock</span>
+                  } @else {
+                    <span>Out of stock</span>
+                  }
+                </div>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    }
+  }
+</section>

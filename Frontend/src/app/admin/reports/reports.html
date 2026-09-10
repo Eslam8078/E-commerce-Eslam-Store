@@ -1,0 +1,151 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>Reports</h2>
+      <p>Generate revenue and product performance reports</p>
+    </div>
+  </div>
+
+  <div class="date-filters">
+    <label>
+      From
+      <input type="date" [(ngModel)]="fromDate" />
+    </label>
+    <label>
+      To
+      <input type="date" [(ngModel)]="toDate" />
+    </label>
+    <button type="button" (click)="generate()">Generate Report</button>
+    <button type="button" class="print-btn" (click)="printReport()">Print Report</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <p class="hint">Generating report...</p>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total Revenue</p>
+        <p class="stat-value">{{ revenue?.totalRevenue || 0 | number }} EGP</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Total Orders</p>
+        <p class="stat-value">{{ revenue?.totalOrders || 0 }}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Average Order Value</p>
+        <p class="stat-value">{{ averageOrderValue | number: '1.0-2' }} EGP</p>
+      </div>
+    </div>
+
+    <section class="panel">
+      <h3>Product Performance</h3>
+
+      @if (topProducts.length === 0) {
+        <p class="hint">No product sales in this range.</p>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity Sold</th>
+              <th>Total Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of topProducts; track p.productId) {
+              <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.totalQuantity }}</td>
+                <td>{{ p.totalSales | number }} EGP</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+    <section class="panel">
+      <h3>Orders by Status</h3>
+
+      @if (ordersByStatus.length === 0) {
+        <p class="hint">No orders in this range.</p>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Count</th>
+              <th>Total Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (s of ordersByStatus; track s.status) {
+              <tr>
+                <td>{{ s.status }}</td>
+                <td>{{ s.count }}</td>
+                <td>{{ s.totalValue | number }} EGP</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+
+    <section class="panel">
+      <h3>Sales by Date</h3>
+
+      @if (salesByDate.length === 0) {
+        <p class="hint">No sales in this range.</p>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Orders</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (s of salesByDate; track s.date) {
+              <tr>
+                <td>{{ s.date }}</td>
+                <td>{{ s.totalOrders }}</td>
+                <td>{{ s.totalRevenue | number }} EGP</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+
+    <section class="panel">
+      <h3>Sales by Governorate</h3>
+
+      @if (salesByGovernorate.length === 0) {
+        <p class="hint">No sales in this range.</p>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Governorate</th>
+              <th>Orders</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (s of salesByGovernorate; track s.governorate) {
+              <tr>
+                <td>{{ s.governorate }}</td>
+                <td>{{ s.totalOrders }}</td>
+                <td>{{ s.totalRevenue | number }} EGP</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  }
+</div>

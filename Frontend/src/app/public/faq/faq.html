@@ -1,0 +1,29 @@
+<section class="faq-page">
+  <div class="faq-header">
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything you need to know about shopping with us.</p>
+  </div>
+
+  @if (isLoading) {
+    <p class="hint">Loading FAQs...</p>
+  } @else if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  } @else if (faqs.length === 0) {
+    <p class="hint">No FAQs available yet.</p>
+  } @else {
+    <div class="faq-list">
+      @for (faq of faqs; track faq._id) {
+        <div class="faq-item" [class.open]="openId === faq._id">
+          <button type="button" class="faq-question" (click)="toggle(faq._id)">
+            <span>{{ faq.question }}</span>
+            <i class="bi" [class.bi-chevron-down]="openId !== faq._id" [class.bi-chevron-up]="openId === faq._id"></i>
+          </button>
+
+          @if (openId === faq._id) {
+            <div class="faq-answer">{{ faq.answer }}</div>
+          }
+        </div>
+      }
+    </div>
+  }
+</section>

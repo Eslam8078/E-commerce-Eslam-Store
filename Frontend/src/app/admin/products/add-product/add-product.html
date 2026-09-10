@@ -1,0 +1,465 @@
+<div class="add-product-page">
+
+  <div class="page-header">
+
+    <div>
+
+      <h2>
+        Add Product
+      </h2>
+
+      <p>
+        Create a new product
+      </p>
+
+    </div>
+
+    <a
+      routerLink="/admin/products/list"
+      class="back-btn"
+    >
+      Back to Products
+    </a>
+
+  </div>
+
+  @if (errorMessage) {
+
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+
+  }
+
+  @if (successMessage) {
+
+    <div class="success-message">
+      {{ successMessage }}
+    </div>
+
+  }
+
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="addProduct()"
+  >
+
+    <section class="form-section">
+
+      <h3>
+        Product Information
+      </h3>
+
+      <div class="form-group">
+
+        <label for="name">
+          Product Name
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          (blur)="generateSlug()"
+          placeholder="Enter product name"
+        >
+
+        @if (
+          name?.touched &&
+          name?.hasError('required')
+        ) {
+
+          <small>
+            Product name is required.
+          </small>
+
+        }
+
+        @if (
+          name?.touched &&
+          name?.hasError('minlength')
+        ) {
+
+          <small>
+            Product name must contain at least 2 characters.
+          </small>
+
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="description">
+          Description
+        </label>
+
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="5"
+          placeholder="Enter product description"
+        ></textarea>
+
+        @if (
+          description?.touched &&
+          description?.hasError('required')
+        ) {
+
+          <small>
+            Description is required.
+          </small>
+
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="price">
+          Price
+        </label>
+
+        <input
+          id="price"
+          type="number"
+          formControlName="price"
+          min="0"
+          step="0.01"
+          placeholder="Enter price"
+        >
+
+        @if (
+          price?.touched &&
+          price?.hasError('required')
+        ) {
+
+          <small>
+            Price is required.
+          </small>
+
+        }
+
+        @if (
+          price?.touched &&
+          price?.hasError('min')
+        ) {
+
+          <small>
+            Price cannot be negative.
+          </small>
+
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="stockQuantity">
+          Stock Quantity
+        </label>
+
+        <input
+          id="stockQuantity"
+          type="number"
+          formControlName="stockQuantity"
+          min="0"
+          step="1"
+          placeholder="Enter stock quantity"
+        >
+
+        @if (
+          stockQuantity?.touched &&
+          stockQuantity?.hasError('required')
+        ) {
+
+          <small>
+            Stock quantity is required.
+          </small>
+
+        }
+
+        @if (
+          stockQuantity?.touched &&
+          stockQuantity?.hasError('min')
+        ) {
+
+          <small>
+            Stock cannot be negative.
+          </small>
+
+        }
+
+      </div>
+
+    </section>
+
+    <section class="form-section">
+
+      <h3>
+        Category
+      </h3>
+
+      <div class="form-group">
+
+        <label for="categoryId">
+          Category
+        </label>
+
+        <select
+          id="categoryId"
+          formControlName="categoryId"
+          (change)="onCategoryChange()"
+        >
+
+          <option value="">
+            Select Category
+          </option>
+
+          @for (
+            category of categories;
+            track category._id
+          ) {
+
+            <option
+              [value]="category._id"
+            >
+              {{ category.name }}
+            </option>
+
+          }
+
+        </select>
+
+        @if (
+          categoryId?.touched &&
+          categoryId?.hasError('required')
+        ) {
+
+          <small>
+            Category is required.
+          </small>
+
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="subCategoryId">
+          Subcategory
+        </label>
+
+        <select
+          id="subCategoryId"
+          formControlName="subCategoryId"
+          [disabled]="!categoryId?.value"
+        >
+
+          <option value="">
+            Select Subcategory
+          </option>
+
+          @for (
+            subcategory of subcategories;
+            track subcategory._id
+          ) {
+
+            <option
+              [value]="subcategory._id"
+            >
+              {{ subcategory.name }}
+            </option>
+
+          }
+
+        </select>
+
+        @if (
+          subCategoryId?.touched &&
+          subCategoryId?.hasError('required')
+        ) {
+
+          <small>
+            Subcategory is required.
+          </small>
+
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="season">
+          Season
+        </label>
+
+        <select
+          id="season"
+          formControlName="season"
+        >
+
+          <option value="">
+            Select Season
+          </option>
+
+          <option value="summer">
+            Summer
+          </option>
+
+          <option value="winter">
+            Winter
+          </option>
+
+          <option value="spring">
+            Spring
+          </option>
+
+          <option value="autumn">
+            Autumn
+          </option>
+
+        </select>
+
+      </div>
+
+    </section>
+
+    <section class="form-section">
+
+      <h3>
+        SEO
+      </h3>
+
+      <div class="form-group">
+
+        <label for="slug">
+          Slug
+        </label>
+
+        <input
+          id="slug"
+          type="text"
+          formControlName="slug"
+          placeholder="product-slug"
+        >
+
+        @if (
+          slug?.touched &&
+          slug?.hasError('required')
+        ) {
+
+          <small>
+            Slug is required.
+          </small>
+
+        }
+
+      </div>
+
+    </section>
+
+    <section class="form-section">
+
+      <h3>
+        Product Images
+      </h3>
+
+      <div class="form-group">
+
+        <label for="images">
+          Images
+        </label>
+
+        <input
+          id="images"
+          type="file"
+          accept="image/png,image/jpeg"
+          multiple
+          (change)="onImagesSelected($event)"
+        >
+
+        <small>
+          Maximum 10 images.
+          Each image must be 2MB or less.
+        </small>
+
+      </div>
+
+      @if (
+        imagePreviews.length > 0
+      ) {
+
+        <div class="image-preview-container">
+
+          @for (
+            preview of imagePreviews;
+            track $index
+          ) {
+
+            <div class="image-preview">
+
+              <img
+                [src]="preview"
+                alt="Product preview"
+              >
+
+              <button
+                type="button"
+                (click)="removeImage($index)"
+              >
+                Remove
+              </button>
+
+            </div>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+            <label class="checkbox-row">
+          <input type="checkbox" formControlName="isBestSeller" />
+          Show this product in Best Sellers
+        </label>
+
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="isNewArrival" />
+          Show this product in New Arrivals
+        </label>
+
+<div class="form-actions">
+
+      <button
+        type="button"
+        (click)="cancel()"
+        [disabled]="isLoading"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="isLoading"
+      >
+
+        @if (isLoading) {
+
+          Creating...
+
+        } @else {
+
+          Create Product
+
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

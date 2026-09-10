@@ -1,0 +1,34 @@
+.forbidden {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #f8f4ef;
+}
+
+.error-code {
+  font-size: 5rem;
+  font-weight: 800;
+  color: #212529;
+  margin: 0;
+}
+
+.forbidden h1 {
+  margin: 8px 0;
+}
+
+.message {
+  color: #6c757d;
+  margin-bottom: 24px;
+}
+
+.home-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  background: #212529;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}

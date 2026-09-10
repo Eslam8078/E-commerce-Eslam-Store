@@ -1,0 +1,36 @@
+.checkout-page { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 24px; align-items: start; }
+.checkout-main, .summary { border: 1px solid var(--line); border-radius: var(--radius-lg); background: rgb(255 255 255 / 90%); box-shadow: var(--shadow-sm); }
+.checkout-main { padding: 25px; }
+.checkout-main h2, .summary h3 { margin: 0 0 16px; font-weight: 900; letter-spacing: -.04em; }
+.address-list { display: grid; gap: 10px; }
+.address-option { position: relative; display: flex; gap: 12px; padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); cursor: pointer; }
+.address-option:hover { border-color: rgb(99 91 255 / 28%); transform: translateY(-1px); }
+.address-option.selected { border-color: rgb(99 91 255 / 48%); background: var(--primary-soft); box-shadow: 0 0 0 4px rgb(99 91 255 / 7%); }
+.address-option p { margin: 4px 0 0; color: var(--muted); font-size: .84rem; line-height: 1.55; }
+.add-address-link { display: inline-flex; margin: 14px 0 25px; color: var(--primary-dark); font-weight: 850; text-decoration: none; }
+.add-address-link:hover { color: var(--primary); }
+.order-review { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-soft); }
+.review-item, .summary-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 14px; border-bottom: 1px solid #e9ebf2; }
+.review-item:last-child, .summary-row:last-child { border-bottom: 0; }
+.summary { position: sticky; top: 24px; padding: 22px; }
+.summary::before { content: ""; display: block; width: 45px; height: 4px; margin-bottom: 14px; border-radius: 99px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+.place-order-btn { width: 100%; padding: 13px 16px; margin-top: 14px; }
+.alert { margin-bottom: 16px; }
+@media (max-width: 850px) { .checkout-page { grid-template-columns: 1fr; } .summary { position: static; } }
+
+.checkout-page > * {
+  animation: checkoutReveal .5s var(--ease-out, cubic-bezier(.22, 1, .36, 1)) both;
+}
+
+.checkout-page > *:nth-child(2) { animation-delay: 80ms; }
+.checkout-page > *:nth-child(3) { animation-delay: 160ms; }
+.checkout-page > *:nth-child(4) { animation-delay: 240ms; }
+
+@keyframes checkoutReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-page > * { animation: none; }
+}

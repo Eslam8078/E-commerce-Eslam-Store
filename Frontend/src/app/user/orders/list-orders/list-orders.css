@@ -1,0 +1,151 @@
+.hint,
+.error {
+  text-align: center;
+  color: #868e96;
+  padding: 60px 0;
+}
+
+.error {
+  color: #d9534f;
+}
+
+.empty {
+  text-align: center;
+  padding: 80px 0;
+  color: #868e96;
+}
+
+.shop-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 24px;
+  background: #212529;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.orders-page h2 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-card {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.order-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.order-number {
+  font-weight: 700;
+  margin: 0;
+}
+
+.order-date {
+  color: #868e96;
+  font-size: 0.85rem;
+  margin: 2px 0 0;
+}
+
+.status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending,
+.status-preparing,
+.status-shipped {
+  background: #cfe2ff;
+  color: #084298;
+}
+
+.status-delivered {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-cancelled,
+.status-rejected {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.status-refund {
+  background: #e2e3e5;
+  color: #41464b;
+}
+
+.order-total {
+  font-weight: 700;
+  margin: 0;
+}
+
+.cancel-btn {
+  padding: 6px 12px;
+  border: 1px solid #f1aeb5;
+  color: #dc3545;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.order-card {
+  animation: orderCardIn .48s var(--ease-out, cubic-bezier(.22, 1, .36, 1)) both;
+}
+
+.order-card:nth-child(1) { animation-delay: 40ms; }
+.order-card:nth-child(2) { animation-delay: 90ms; }
+.order-card:nth-child(3) { animation-delay: 140ms; }
+.order-card:nth-child(4) { animation-delay: 190ms; }
+.order-card:nth-child(5) { animation-delay: 240ms; }
+
+@keyframes orderCardIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-card { animation: none; }
+}

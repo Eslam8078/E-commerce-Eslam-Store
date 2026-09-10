@@ -1,0 +1,75 @@
+<div class="page backup-page">
+  <div class="page-header">
+    <div>
+      <h2>Database Backups</h2>
+      <p>Create and restore MongoDB backups safely from the admin panel.</p>
+    </div>
+
+    <div class="backup-actions">
+      <button type="button" class="primary-btn" (click)="createBackup()" [disabled]="actionLoading">
+        <i class="bi bi-database-add"></i>
+        {{ actionLoading ? 'Working...' : 'Create Backup' }}
+      </button>
+      <button type="button" class="btn-sm" (click)="load()" [disabled]="isLoading">
+        <i class="bi bi-arrow-clockwise"></i>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="success">{{ successMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <section class="panel backup-empty">Loading backups...</section>
+  } @else if (backups.length === 0) {
+    <section class="panel backup-empty">
+      <i class="bi bi-database"></i>
+      <h3>No backups yet</h3>
+      <p>Create your first database backup to keep the store data safe.</p>
+    </section>
+  } @else {
+    <section class="panel">
+      <div class="backup-list">
+        @for (backup of backups; track backup.fileName) {
+          <div class="backup-row">
+            <div class="backup-icon">
+              <i class="bi bi-file-earmark-zip"></i>
+            </div>
+
+            <div class="backup-info">
+              <strong>{{ backup.fileName }}</strong>
+              <span>{{ sizeInMb(backup.sizeInBytes) }} MB · {{ backup.createdAt | date:'medium' }}</span>
+            </div>
+
+            <button
+              type="button"
+              class="btn-sm danger"
+              (click)="askRestore(backup)"
+              [disabled]="actionLoading"
+            >
+              <i class="bi bi-arrow-counterclockwise"></i>
+              Restore
+            </button>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <app-confirm-dialog
+    [open]="!!pendingRestore"
+    title="Restore database backup"
+    [message]="pendingRestore ? 'Restore ' + pendingRestore.fileName + '? Current database data will be replaced by the backup.' : ''"
+    confirmText="Restore"
+    cancelText="Cancel"
+    [danger]="true"
+    (confirmed)="restoreBackup()"
+    (cancelled)="cancelRestore()"
+  ></app-confirm-dialog>
+</div>

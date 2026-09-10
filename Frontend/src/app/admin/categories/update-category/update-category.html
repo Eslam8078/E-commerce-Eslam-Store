@@ -1,0 +1,31 @@
+@if (isLoading) {
+  <p class="hint">Loading category...</p>
+} @else {
+  <form class="form-card" [formGroup]="categoryForm" (ngSubmit)="updateCategory()">
+    <div class="form-group">
+      <label for="name">Category Name</label>
+      <input id="name" type="text" formControlName="name" placeholder="e.g. Men's Wear" />
+
+      @if (name?.touched && name?.hasError('required')) {
+        <small>Category name is required</small>
+      }
+      @if (name?.touched && name?.hasError('minlength')) {
+        <small>Name must be at least 2 characters</small>
+      }
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert error">{{ errorMessage }}</div>
+    }
+    @if (successMessage) {
+      <div class="alert success">{{ successMessage }}</div>
+    }
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="isSaving">
+        {{ isSaving ? 'Updating...' : 'Update Category' }}
+      </button>
+      <button type="button" class="ghost" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+}

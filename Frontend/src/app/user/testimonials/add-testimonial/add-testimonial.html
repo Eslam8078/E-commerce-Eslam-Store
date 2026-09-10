@@ -1,0 +1,33 @@
+<form class="form-card" [formGroup]="testimonialForm" (ngSubmit)="submit()">
+  <div class="form-row">
+    <label>Rating</label>
+    <div class="star-picker">
+      @for (s of stars(); track s) {
+        <i class="bi" [class.bi-star-fill]="s <= selectedRating" [class.bi-star]="s > selectedRating" (click)="setRating(s)"></i>
+      }
+    </div>
+    @if (rating?.touched && rating?.hasError('min')) {
+      <small>Please select a rating</small>
+    }
+  </div>
+
+  <div class="form-row">
+    <label for="message">Your Feedback</label>
+    <textarea id="message" formControlName="message" rows="5" placeholder="Tell us about your experience..."></textarea>
+    @if (message?.touched && message?.hasError('required')) {
+      <small>Message is required</small>
+    }
+    @if (message?.touched && message?.hasError('minlength')) {
+      <small>Message must be at least 10 characters</small>
+    }
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert error">{{ errorMessage }}</div>
+  }
+  @if (successMessage) {
+    <div class="alert success">{{ successMessage }}</div>
+  }
+
+  <button type="submit" [disabled]="isLoading">{{ isLoading ? 'Submitting...' : 'Submit Testimonial' }}</button>
+</form>

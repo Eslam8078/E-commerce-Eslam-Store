@@ -1,0 +1,112 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>Orders</h2>
+      <p>Manage and track all customer orders</p>
+    </div>
+  </div>
+
+  <div class="filters">
+    <select [(ngModel)]="status" (ngModelChange)="applyFilter()">
+      <option value="">All Statuses</option>
+      @for (s of statusOptions; track s) {
+        <option [value]="s">{{ s }}</option>
+      }
+    </select>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <p class="hint">Loading orders...</p>
+  } @else if (orders.length === 0) {
+    <p class="hint">No orders found.</p>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders; track order._id) {
+          <tr (click)="toggleExpand(order)" class="row-clickable">
+            <td><span class="order-number">#{{ order.orderNumber || order._id.slice(-8) }}</span></td>
+            <td>{{ customerName(order) }}</td>
+            <td>{{ order.orderedAt | date: 'medium' }}</td>
+            <td>{{ order.totalPrice | number }} EGP</td>
+            <td>
+              <select
+                [ngModel]="order.orderStatus"
+                (ngModelChange)="updateStatus(order, $event)"
+                (click)="$event.stopPropagation()"
+                [disabled]="actionLoadingId === order._id || nextStatusOptions(order).length === 0"
+                class="status-select"
+                [class]="'status-' + order.orderStatus"
+              >
+                <option [value]="order.orderStatus">{{ order.orderStatus }}</option>
+                @for (s of nextStatusOptions(order); track s) {
+                  <option [value]="s">{{ s }}</option>
+                }
+              </select>
+            </td>
+            <td>{{ expandedId === order._id ? '▲' : '▼' }}</td>
+          </tr>
+
+          @if (expandedId === order._id) {
+            <tr class="detail-row">
+              <td colspan="6">
+                <div class="order-detail">
+                  <div class="customer-block">
+                    <strong>{{ customerName(order) }}</strong>
+                    <span>{{ order.addressString }}</span>
+                  </div>
+
+                  <div class="order-items">
+                    <h4>Order contents</h4>
+                    @for (item of order.items; track $index) {
+                      <div class="order-item-line">
+                        <span>{{ productName(item) }}</span>
+                        <span>× {{ item.quantity }}</span>
+                        <strong>{{ item.priceAtOrder | number }} EGP</strong>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="order-summary-line">
+                    <span>Subtotal {{ order.subtotal | number }} EGP</span>
+                    <span>Delivery {{ order.deliveryFee | number }} EGP</span>
+                    <strong>Total {{ order.totalPrice | number }} EGP</strong>
+                  </div>
+
+                  @if (order.orderStatus === 'refund' && order.refundStatus === 'pending') {
+                    <div class="refund-actions">
+                      <span>Refund request pending</span>
+                      <div>
+                        <button type="button" class="btn-sm success" [disabled]="actionLoadingId === order._id" (click)="handleRefund(order, true)">Approve Refund</button>
+                        <button type="button" class="btn-sm danger" [disabled]="actionLoadingId === order._id" (click)="handleRefund(order, false)">Reject Refund</button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button type="button" [disabled]="page <= 1" (click)="goToPage(page - 1)">Previous</button>
+      <span>Page {{ page }} of {{ totalPages }} ({{ total }} orders)</span>
+      <button type="button" [disabled]="page >= totalPages" (click)="goToPage(page + 1)">Next</button>
+    </div>
+  }
+</div>

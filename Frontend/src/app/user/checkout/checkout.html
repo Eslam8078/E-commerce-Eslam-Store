@@ -1,0 +1,75 @@
+@if (isLoading) {
+  <p class="hint">Loading checkout...</p>
+} @else {
+  <div class="checkout-page">
+    <div class="checkout-main">
+      @if (missingProfileFields) {
+        <div class="no-address">
+          <p>Your national ID and mobile phone are required before you can place an order.</p>
+          <a routerLink="/user/profile" class="add-address-link">+ Complete your profile</a>
+        </div>
+      }
+
+      <h2>Delivery Address</h2>
+
+      @if (addresses.length === 0) {
+        <div class="no-address">
+          <p>You don't have any saved addresses yet.</p>
+          <a routerLink="/user/profile/addresses" class="add-address-link">+ Add an address</a>
+        </div>
+      } @else {
+        <div class="address-list">
+          @for (addr of addresses; track addr._id) {
+            <label class="address-option" [class.selected]="selectedAddressId === addr._id">
+              <input type="radio" name="address" [value]="addr._id" [(ngModel)]="selectedAddressId" (ngModelChange)="loadQuote()" />
+              <div>
+                <strong>{{ addr.label }}</strong>
+                <p>{{ addr.address || addr.street }}, {{ addr.city }}, {{ addr.governorate }}</p>
+              </div>
+            </label>
+          }
+        </div>
+
+        <a routerLink="/user/profile/addresses" class="add-address-link">+ Add a new address</a>
+      }
+
+      @if (cart) {
+        <h2 class="order-review-title">Order Review</h2>
+        <div class="order-review">
+          @for (item of cart.items; track $index) {
+            <div class="review-item">
+              <span>{{ productName(item) }} × {{ item.quantity }}</span>
+              <span>{{ item.priceAtOrder * item.quantity | number }} EGP</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <aside class="summary">
+      <h3>Summary</h3>
+      @if (cart) {
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong>{{ cart.totalPrice | number }} EGP</strong>
+        </div>
+        <div class="summary-row">
+          <span>Delivery Fee</span>
+          <strong>{{ deliveryFee | number }} EGP</strong>
+        </div>
+        <div class="summary-row total-row">
+          <span>Total</span>
+          <strong>{{ checkoutTotal | number }} EGP</strong>
+        </div>
+      }
+
+      @if (errorMessage) {
+        <div class="alert">{{ errorMessage }}</div>
+      }
+
+      <button type="button" class="place-order-btn" [disabled]="isPlacingOrder || missingProfileFields" (click)="placeOrder()">
+        {{ isPlacingOrder ? 'Placing Order...' : 'Place Order' }}
+      </button>
+    </aside>
+  </div>
+}

@@ -1,0 +1,4 @@
+.admin-layout { min-height: 100vh; display: flex; background: transparent; }
+.admin-main { min-width: 0; flex: 1; }
+.admin-content { min-height: 100vh; padding: 30px clamp(18px, 3vw, 36px); animation: fadeIn .35s ease both; }
+@media (max-width: 768px) { .admin-content { padding: 22px 14px; } }

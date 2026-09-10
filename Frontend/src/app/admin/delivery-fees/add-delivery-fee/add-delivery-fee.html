@@ -1,0 +1,45 @@
+<div class="delivery-form-page">
+  <div class="form-heading">
+    <h3>Add Delivery Location</h3>
+    <p>Add a governorate first, then add cities and their fees.</p>
+  </div>
+
+  @if (successMessage) { <div class="alert success">{{ successMessage }}</div> }
+  @if (errorMessage) { <div class="alert error">{{ errorMessage }}</div> }
+
+  <div class="form-grid">
+    <form class="form-card" [formGroup]="governorateForm" (ngSubmit)="addGovernorate()">
+      <div class="card-icon"><i class="bi bi-geo-alt"></i></div>
+      <h4>Add Governorate</h4>
+      <label>Governorate Name</label>
+      <input formControlName="governorate" placeholder="e.g. Alexandria" />
+      @if (governorateForm.controls['governorate'].touched && governorateForm.controls['governorate'].invalid) {
+        <small class="field-error">Enter a valid governorate name.</small>
+      }
+      <button class="primary-btn" type="submit" [disabled]="governorateLoading">
+        <i class="bi bi-plus-lg"></i>{{ governorateLoading ? 'Adding...' : 'Add Governorate' }}
+      </button>
+    </form>
+
+    <form class="form-card" [formGroup]="cityForm" (ngSubmit)="addCity()">
+      <div class="card-icon"><i class="bi bi-pin-map"></i></div>
+      <h4>Add City</h4>
+      <label>Governorate</label>
+      <select formControlName="governorate">
+        <option value="">Select governorate</option>
+        @for (location of locations; track location.governorate) {
+          <option [value]="location.governorate">{{ location.governorate }}</option>
+        }
+      </select>
+      <label>City Name</label>
+      <input formControlName="name" placeholder="e.g. Smouha" />
+      <label>Delivery Fee</label>
+      <div class="fee-input"><input type="number" min="0" step="1" formControlName="fee" /><span>EGP</span></div>
+      <button class="primary-btn" type="submit" [disabled]="cityLoading || !locations.length">
+        <i class="bi bi-plus-lg"></i>{{ cityLoading ? 'Adding...' : 'Add City' }}
+      </button>
+    </form>
+  </div>
+
+  <button class="cancel-btn" type="button" (click)="cancel()">Back to list</button>
+</div>

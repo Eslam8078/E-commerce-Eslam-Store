@@ -1,0 +1,47 @@
+@if (isLoading) {
+  <p class="hint">Loading testimonials...</p>
+} @else if (errorMessage) {
+  <p class="error">{{ errorMessage }}</p>
+} @else if (testimonials.length === 0) {
+  <p class="hint">You haven't shared any testimonials yet.</p>
+} @else {
+  <div class="grid">
+    @for (t of testimonials; track t._id) {
+      <div class="card">
+        <div class="card-header">
+          <div class="stars">
+            @for (s of stars(t.rating); track $index) {
+              <i class="bi bi-star-fill"></i>
+            }
+          </div>
+          <span class="status status-{{ t.status }}">{{ t.status }}</span>
+        </div>
+        <p class="message">{{ t.message }}</p>
+        <p class="date">{{ t.createdAt | date: 'mediumDate' }}</p>
+
+        <button type="button" class="delete-btn" (click)="deleteTestimonial(t)">
+          Delete
+        </button>
+      </div>
+    }
+  </div>
+
+  @if (totalPages > 1) {
+    <div class="pagination">
+      <button type="button" [disabled]="page <= 1" (click)="goToPage(page - 1)">Previous</button>
+      <span>Page {{ page }} of {{ totalPages }} ({{ total }} testimonials)</span>
+      <button type="button" [disabled]="page >= totalPages" (click)="goToPage(page + 1)">Next</button>
+    </div>
+  }
+}
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  title="Delete testimonial"
+  message="Delete your testimonial?"
+  confirmText="Delete"
+  cancelText="Cancel"
+  [danger]="true"
+  (confirmed)="confirmDelete()"
+  (cancelled)="closeConfirm()"
+/>

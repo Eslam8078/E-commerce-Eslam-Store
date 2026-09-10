@@ -1,0 +1,50 @@
+.user-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.user-main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.user-main {
+  position: relative;
+  isolation: isolate;
+  animation: userMainIn .5s var(--ease-out, cubic-bezier(.22, 1, .36, 1)) both;
+}
+
+.user-main::before {
+  content: '';
+  position: fixed;
+  width: 360px;
+  height: 360px;
+  top: 110px;
+  right: -170px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(99 91 255 / 9%), transparent 68%);
+  pointer-events: none;
+  z-index: -1;
+  animation: userGlow 8s ease-in-out infinite;
+}
+
+@keyframes userMainIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes userGlow {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .65; }
+  50% { transform: translate3d(-28px, 20px, 0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .user-main,
+  .user-main::before {
+    animation: none;
+  }
+}

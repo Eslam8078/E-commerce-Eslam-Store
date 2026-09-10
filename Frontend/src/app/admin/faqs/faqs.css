@@ -1,0 +1,20 @@
+.page { max-width:1180px; margin-inline:auto; }
+.page-header { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:22px; }
+.page-header h2 { margin:0; font-size:clamp(1.7rem,3vw,2.2rem); font-weight:900; letter-spacing:-.05em; }
+.page-header p { margin:6px 0 0; color:var(--muted); }
+.header-actions { display:flex; align-items:center; gap:10px; }
+.checkbox-filter { display:inline-flex; align-items:center; gap:7px; padding:9px 11px; border:1px solid var(--line); border-radius:11px; background:var(--surface); color:var(--muted); font-size:.8rem; font-weight:800; }
+.add-btn { padding:10px 15px; border:0; border-radius:11px; color:#fff; background:linear-gradient(135deg,var(--primary),#8379ff); font-weight:850; cursor:pointer; box-shadow:0 10px 22px rgb(99 91 255 / 18%); }
+.faq-form { display:grid; gap:14px; margin-bottom:20px; padding:20px; border:1px solid var(--line); border-radius:var(--radius-lg); background:rgb(255 255 255 / 88%); box-shadow:var(--shadow-sm); }
+.faq-form .form-row { display:grid; gap:7px; }
+.faq-form label { color:#3b4354; font-size:.78rem; font-weight:850; }
+.faq-form input,.faq-form textarea { width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:11px; resize:vertical; }
+.faq-form button { justify-self:start; padding:10px 15px; border:0; border-radius:11px; background:#171b2d; color:#fff; font-weight:850; cursor:pointer; }
+.faq-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+.faq-card { padding:19px; border:1px solid var(--line); border-radius:18px; background:rgb(255 255 255 / 90%); box-shadow:var(--shadow-sm); animation:fadeUp .4s ease both; transition:transform .25s ease,box-shadow .25s ease; }
+.faq-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
+.faq-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:15px; }
+.faq-card-header h4 { margin:0; font-weight:900; line-height:1.45; }
+.faq-answer { margin:12px 0 16px; color:#596274; line-height:1.7; }
+.faq-actions { display:flex; gap:8px; flex-wrap:wrap; }
+@media(max-width:700px){ .page-header,.header-actions{align-items:stretch;flex-direction:column}.add-btn{width:100%}.faq-list{grid-template-columns:1fr} }

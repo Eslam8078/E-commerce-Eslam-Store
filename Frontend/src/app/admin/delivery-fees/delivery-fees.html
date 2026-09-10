@@ -1,0 +1,19 @@
+<section class="delivery-page">
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">Shipping</span>
+      <h2>Delivery Fees</h2>
+      <p>Manage governorates, cities, and delivery fees.</p>
+    </div>
+    <a routerLink="/admin/delivery-fees/add" class="add-btn">+ Add Delivery</a>
+  </div>
+
+  <nav class="page-nav">
+    <a routerLink="/admin/delivery-fees/list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">All Locations</a>
+    <a routerLink="/admin/delivery-fees/add" routerLinkActive="active">Add</a>
+  </nav>
+
+  <section class="page-content">
+    <router-outlet></router-outlet>
+  </section>
+</section>

@@ -1,0 +1,32 @@
+@if (open) {
+  <div class="dialog-backdrop" role="presentation" (click)="cancelled.emit()">
+    <section
+      class="dialog"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="title"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="dialog-icon" [class.danger]="danger">
+        <i class="bi bi-exclamation-circle"></i>
+      </div>
+
+      <h3>{{ title }}</h3>
+      <p>{{ message }}</p>
+
+      <div class="dialog-actions">
+        <button type="button" class="cancel" (click)="cancelled.emit()">
+          {{ cancelText }}
+        </button>
+        <button
+          type="button"
+          class="confirm"
+          [class.danger]="danger"
+          (click)="confirmed.emit()"
+        >
+          {{ confirmText }}
+        </button>
+      </div>
+    </section>
+  </div>
+}

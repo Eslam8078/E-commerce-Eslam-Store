@@ -1,0 +1,15 @@
+<div class="page">
+  <div class="page-header">
+    <h2>My Testimonials</h2>
+    <a routerLink="/user/testimonials/add" class="add-btn">+ Share Feedback</a>
+  </div>
+
+  <nav class="page-nav">
+    <a routerLink="/user/testimonials/list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      My Testimonials
+    </a>
+    <a routerLink="/user/testimonials/add" routerLinkActive="active">Add New</a>
+  </nav>
+
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,20 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>Categories</h2>
+      <p>Manage product categories</p>
+    </div>
+    <a routerLink="/admin/categories/add" class="add-btn">+ Add Category</a>
+  </div>
+
+  <nav class="page-nav">
+    <a routerLink="/admin/categories/list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      All Categories
+    </a>
+    <a routerLink="/admin/categories/add" routerLinkActive="active">Add Category</a>
+  </nav>
+
+  <section class="page-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

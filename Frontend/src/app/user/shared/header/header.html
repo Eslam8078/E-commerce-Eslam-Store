@@ -1,0 +1,73 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a routerLink="/" class="brand"><span class="brand-mark">E</span><span>Eslam Store</span></a>
+
+    <button type="button" class="menu-toggle" (click)="toggleMenu()">☰</button>
+
+    <nav class="main-nav" [class.open]="menuOpen">
+      @if (authService.isCustomer()) {
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/user/products" routerLinkActive="active">Products</a>
+        <a routerLink="/user/orders" routerLinkActive="active">Orders</a>
+        <a routerLink="/user/testimonials" routerLinkActive="active">Testimonials</a>
+        <a routerLink="/user/faq" routerLinkActive="active">FAQ</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      } @else if (authService.isAdmin()) {
+        <a routerLink="/admin/dashboard" routerLinkActive="active">Admin Dashboard</a>
+      } @else {
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/products" routerLinkActive="active">Products</a>
+        <a routerLink="/faq" routerLinkActive="active">FAQ</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      }
+    </nav>
+
+    <div class="header-actions">
+      @if (authService.isCustomer()) {
+        <span class="hello-user">Hello, {{ currentUser?.name || "Customer" }}</span>
+        <a routerLink="/user/notifications" class="icon-link" title="Notifications">
+          <i class="bi bi-bell"></i>
+          @if (unreadCount > 0) {
+            <span class="badge">{{ unreadCount }}</span>
+          }
+        </a>
+
+        <a routerLink="/user/cart" class="icon-link" title="Cart">
+          <i class="bi bi-cart3"></i>
+          @if (cartCount > 0) {
+            <span class="badge">{{ cartCount }}</span>
+          }
+        </a>
+
+        <a routerLink="/user/profile" class="icon-link" title="Profile">
+          <i class="bi bi-person-circle"></i>
+          <span class="user-name">{{ currentUser?.name }}</span>
+        </a>
+
+        <button type="button" class="logout-btn" (click)="logout()" title="Logout">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      } @else if (authService.isAdmin()) {
+        <a routerLink="/admin/notifications" class="icon-link" title="Notifications">
+          <i class="bi bi-bell"></i>
+          @if (unreadCount > 0) {
+            <span class="badge">{{ unreadCount }}</span>
+          }
+        </a>
+        <a routerLink="/admin/dashboard" class="btn-solid">Dashboard</a>
+        <button type="button" class="logout-btn" (click)="logout()" title="Logout">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      } @else {
+        <a routerLink="/guest-cart" class="icon-link" title="Cart">
+          <i class="bi bi-cart3"></i>
+          @if (cartCount > 0) {
+            <span class="badge">{{ cartCount }}</span>
+          }
+        </a>
+        <a routerLink="/auth/login" class="btn-outline">Login</a>
+        <a routerLink="/auth/register" class="btn-solid">Register</a>
+      }
+    </div>
+  </div>
+</header>

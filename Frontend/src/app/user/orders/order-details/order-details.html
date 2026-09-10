@@ -1,0 +1,80 @@
+@if (isLoading) {
+  <p class="hint">Loading order...</p>
+} @else if (errorMessage && !order) {
+  <p class="error">{{ errorMessage }}</p>
+} @else if (order) {
+  <div class="order-details">
+    <a routerLink="/user/orders" class="back-link">← Back to orders</a>
+
+    <div class="header">
+      <div>
+        <h1>Order #{{ order.orderNumber || order._id.slice(-8) }}</h1>
+        <p class="date">{{ order.orderedAt | date: 'medium' }}</p>
+      </div>
+      <span class="status status-{{ order.orderStatus }}">{{ order.orderStatus }}</span>
+    </div>
+
+    <div class="items-list">
+      @for (item of order.items; track $index) {
+        <div class="item">
+          <div class="thumb">
+            @if (productImage(item)) {
+              <img [src]="productImage(item)" [alt]="productName(item)" />
+            }
+          </div>
+          <div class="item-info">
+            <p class="name">{{ productName(item) }}</p>
+            <p class="qty">Qty: {{ item.quantity }}</p>
+          </div>
+          <p class="line-total">{{ item.priceAtOrder * item.quantity | number }} EGP</p>
+        </div>
+      }
+    </div>
+
+    <div class="totals">
+      <div class="row"><span>Subtotal</span><span>{{ order.subtotal | number }} EGP</span></div>
+      <div class="row"><span>Delivery Fee</span><span>{{ order.deliveryFee | number }} EGP</span></div>
+      <div class="row total"><span>Total</span><span>{{ order.totalPrice | number }} EGP</span></div>
+    </div>
+
+    <div class="address-block">
+      <h3>Delivery Address</h3>
+      <p>{{ order.addressString }}</p>
+    </div>
+
+    @if (order.statusHistory?.length) {
+      <div class="history-block">
+        <h3>Status History</h3>
+        <ul>
+          @for (h of order.statusHistory; track $index) {
+            <li><span class="capitalize">{{ h.status }}</span> — {{ h.changedAt | date: 'medium' }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <div class="actions">
+      @if (canCancel) {
+        <button type="button" class="cancel-btn" [disabled]="isActing" (click)="cancelOrder()">Cancel Order</button>
+      }
+      @if (canRefund) {
+        <button type="button" class="refund-btn" [disabled]="isActing" (click)="requestRefund()">Request Refund</button>
+      }
+    </div>
+  </div>
+}
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  [title]="confirmTitle"
+  [message]="confirmMessage"
+  [confirmText]="confirmButtonText"
+  cancelText="Go back"
+  [danger]="confirmAction === 'cancel'"
+  (confirmed)="confirmPendingAction()"
+  (cancelled)="closeConfirm()"
+/>

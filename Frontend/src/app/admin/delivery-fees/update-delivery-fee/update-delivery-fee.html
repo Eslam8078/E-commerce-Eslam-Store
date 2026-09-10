@@ -1,0 +1,41 @@
+<div class="update-page">
+  <div class="form-heading">
+    <h3>Update Delivery Location</h3>
+    <p>Change the governorate name, city names, or delivery fees.</p>
+  </div>
+
+  @if (errorMessage) { <div class="alert error">{{ errorMessage }}</div> }
+
+  @if (loading) {
+    <div class="loading">Loading delivery location...</div>
+  } @else if (!errorMessage) {
+    <div class="update-card">
+      <label>Governorate Name</label>
+      <input [(ngModel)]="governorate" maxlength="80" />
+
+      <div class="city-heading">
+        <div><h4>Cities</h4><span>{{ cities.length }} city{{ cities.length === 1 ? '' : 'ies' }}</span></div>
+        <button type="button" class="add-row-btn" (click)="addCityRow()"><i class="bi bi-plus-lg"></i>Add City</button>
+      </div>
+
+      <div class="city-list">
+        @for (city of cities; track $index; let index = $index) {
+          <div class="city-row">
+            <input [(ngModel)]="city.name" [name]="'city-name-' + index" placeholder="City name" />
+            <div class="fee-field"><input type="number" min="0" step="1" [(ngModel)]="city.fee" [name]="'city-fee-' + index" /><span>EGP</span></div>
+            <button type="button" class="delete-btn" (click)="removeCity(index)" title="Delete city"><i class="bi bi-trash3"></i></button>
+          </div>
+        } @empty {
+          <div class="empty-state">No cities. Add a city before saving.</div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="button" class="primary-btn" [disabled]="saving" (click)="save()">
+          <i class="bi bi-check2"></i>{{ saving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

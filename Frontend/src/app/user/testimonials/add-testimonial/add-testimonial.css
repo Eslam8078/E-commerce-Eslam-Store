@@ -1,0 +1,98 @@
+.form-card {
+  max-width: 500px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.form-row {
+  margin-bottom: 18px;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.star-picker {
+  display: flex;
+  gap: 6px;
+  font-size: 1.6rem;
+  color: #ffc107;
+  cursor: pointer;
+}
+
+.form-row textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.form-row small {
+  color: #d9534f;
+  font-size: 0.8rem;
+}
+
+.alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.alert.error {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.alert.success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+button[type='submit'] {
+  padding: 11px 26px;
+  border: none;
+  border-radius: 8px;
+  background: #212529;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button[type='submit']:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-card {
+  animation: testimonialFormIn .55s var(--ease-out, cubic-bezier(.22, 1, .36, 1)) both;
+}
+
+.star-picker button,
+.star-picker i {
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.star-picker button:hover,
+.star-picker i:hover {
+  transform: translateY(-2px) scale(1.08);
+  filter: drop-shadow(0 6px 10px rgb(245 166 35 / 18%));
+}
+
+@keyframes testimonialFormIn {
+  from { opacity: 0; transform: translateY(16px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-card,
+  .star-picker button,
+  .star-picker i { animation: none; transition: none; }
+}

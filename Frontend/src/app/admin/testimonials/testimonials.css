@@ -1,0 +1,28 @@
+.page { max-width: 1280px; margin-inline: auto; }
+.page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+.page-header h2 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.25rem); font-weight: 900; letter-spacing: -.05em; }
+.page-header p { margin: 7px 0 0; color: var(--muted); }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 22px; padding: 15px; }
+.filters > select, .filter-field select { min-width: 170px; padding: 10px 13px; }
+.filter-field { display: grid; gap: 6px; }
+.filter-field span { color: var(--muted); font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+.alert { margin-bottom: 18px; }
+.hint { padding: 50px; text-align: center; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+.card { position: relative; overflow: hidden; padding: 21px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: rgb(255 255 255 / 91%); box-shadow: var(--shadow-sm); animation: fadeUp .45s ease both; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.card::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+.card:hover { transform: translateY(-5px); border-color: rgb(99 91 255 / 18%); box-shadow: var(--shadow-md); }
+.card-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.stars { margin-bottom: 11px; color: #f3a51d; letter-spacing: 2px; }
+.message { min-height: 82px; margin: 0; color: #4d5363; line-height: 1.75; }
+.status { font-size: .68rem; }
+.status-pending { color: #986700; background: var(--warning-soft); }
+.status-approved { color: #08783b; background: var(--success-soft); }
+.status-declined { color: #a72c40; background: var(--danger-soft); }
+.card-actions { display: flex; gap: 9px; margin-top: 16px; }
+.card-actions button { flex: 1; padding: 10px 12px; border: 0; border-radius: 11px; color: #fff; font-weight: 850; cursor: pointer; }
+.card-actions .approve { background: linear-gradient(135deg, #1aa45b, #08783b); box-shadow: 0 8px 18px rgb(21 153 87 / 15%); }
+.card-actions .decline { background: linear-gradient(135deg, #e34d5b, #b72d3d); box-shadow: 0 8px 18px rgb(217 54 79 / 14%); }
+.card-actions button:disabled { opacity: .5; cursor: wait; }
+.pagination { margin-top: 28px; }
+@media (max-width: 640px) { .filters { align-items: stretch; flex-direction: column; } .filters > select, .filter-field select { width: 100%; } .grid { grid-template-columns: 1fr; } }

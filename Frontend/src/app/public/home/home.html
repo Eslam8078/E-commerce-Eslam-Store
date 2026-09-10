@@ -1,0 +1,84 @@
+<section class="hero">
+  <div class="hero-content">
+    <h1>Discover Fashion That Fits Every Season</h1>
+    <p>Curated clothing collections for the whole family — quality you can trust.</p>
+    <a routerLink="/products" class="hero-btn">Shop Now</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2>New Arrivals</h2>
+    <a routerLink="/products">View all</a>
+  </div>
+
+  <div class="product-grid">
+    @for (product of newArrivals; track product._id) {
+      <a [routerLink]="['/products', product.slug]" class="product-card">
+        <div class="product-image">
+          @if (image(product.images)) {
+            <img [src]="image(product.images)" [alt]="product.name" />
+          }
+        </div>
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | number }} EGP</p>
+      </a>
+    } @empty {
+      <p class="empty">No new arrivals yet.</p>
+    }
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="section-header">
+    <h2>Best Sellers</h2>
+  </div>
+
+  <div class="product-grid">
+    @for (product of bestSellers; track product._id) {
+      <a [routerLink]="['/products', product.slug]" class="product-card">
+        <div class="product-image">
+          @if (image(product.images)) {
+            <img [src]="image(product.images)" [alt]="product.name" />
+          }
+        </div>
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | number }} EGP</p>
+        <p class="sold">Selected by our store team</p>
+      </a>
+    } @empty {
+      <p class="empty">No best sellers selected yet.</p>
+    }
+  </div>
+</section>
+
+@if (testimonials.length > 0) {
+  <section class="section">
+    <div class="section-header">
+      <h2>What Our Customers Say</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      @for (t of testimonials; track t._id) {
+        <div class="testimonial-card">
+          <div class="stars">
+            @for (s of stars(t.rating); track $index) {
+              <i class="bi bi-star-fill"></i>
+            }
+          </div>
+          <p class="message">"{{ t.message }}"</p>
+
+          <div class="testimonial-user">
+            <div class="user-avatar">
+              {{ testimonialInitial(t) }}
+            </div>
+            <div>
+              <h3>{{ testimonialName(t) }}</h3>
+              <span>Verified Customer</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+}

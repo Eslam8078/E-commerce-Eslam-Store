@@ -1,0 +1,111 @@
+<div class="register-container">
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <h2>Create Account</h2>
+
+    <div>
+      <label for="name"> Name </label>
+
+      <input id="name" type="text" formControlName="name" />
+
+      @if (name?.touched && name?.hasError('required')) {
+        <small> Name is required </small>
+      }
+
+      @if (name?.touched && name?.hasError('minlength')) {
+        <small> Name must contain at least 3 characters </small>
+      }
+    </div>
+
+    <div>
+      <label for="email"> Email </label>
+
+      <input id="email" type="email" formControlName="email" />
+
+      @if (email?.touched && email?.hasError('required')) {
+        <small> Email is required </small>
+      }
+
+      @if (email?.touched && email?.hasError('email')) {
+        <small> Enter a valid email </small>
+      }
+    </div>
+
+    <div>
+      <label for="password"> Password </label>
+
+      <input id="password" type="password" formControlName="password" />
+
+      @if (password?.touched && password?.hasError('required')) {
+        <small> Password is required </small>
+      }
+
+      @if (password?.touched && password?.hasError('minlength')) {
+        <small> Password must contain at least 6 characters </small>
+      }
+    </div>
+
+    <div>
+      <label for="gender"> Gender </label>
+
+      <select id="gender" formControlName="gender">
+        <option value="">Select gender</option>
+
+        <option value="male">Male</option>
+
+        <option value="female">Female</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="mobilePhone"> Mobile Phone <span class="optional">(optional)</span> </label>
+
+      <input id="mobilePhone" type="tel" formControlName="mobilePhone" />
+
+      @if (mobilePhone?.touched && mobilePhone?.hasError('required')) {
+        <small> Mobile phone is required </small>
+      }
+
+      @if (mobilePhone?.touched && mobilePhone?.hasError('pattern')) {
+        <small> Enter a valid Egyptian mobile number </small>
+      }
+    </div>
+
+    <div>
+      <label for="nationalId"> National ID <span class="optional">(optional)</span> </label>
+
+      <input id="nationalId" type="text" inputmode="numeric" maxlength="14" formControlName="nationalId" />
+
+      @if (nationalId?.touched && nationalId?.hasError('pattern')) {
+        <small> National ID must contain exactly 14 digits </small>
+      }
+    </div>
+
+    <div>
+      <label for="DOB"> Date of Birth </label>
+
+      <input id="DOB" type="date" formControlName="DOB" />
+    </div>
+
+    @if (errorMessage) {
+      <div>
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div>
+        {{ successMessage }}
+      </div>
+    }
+
+    <button type="submit" [disabled]="isLoading">
+      @if (isLoading) {
+        Creating account...
+      } @else {
+        Register
+      }
+    </button>
+
+    <button type="button" (click)="goToLogin()">Already have an account? Login</button>
+  </form>
+</div>

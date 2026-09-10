@@ -1,0 +1,175 @@
+.welcome {
+  margin-bottom: 32px;
+}
+
+.welcome h1 {
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.welcome p {
+  color: #868e96;
+  margin: 0;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  font-weight: 700;
+}
+
+.section-header a {
+  color: #495057;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.image {
+  background: #f1f3f5;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card h3 {
+  font-size: 0.95rem;
+  margin: 10px 12px 2px;
+}
+
+.price {
+  margin: 0 12px 12px;
+  font-weight: 700;
+}
+
+.empty {
+  color: #868e96;
+}
+
+.welcome{animation:userHomeReveal .6s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}.section{animation:userHomeReveal .65s var(--ease-out,cubic-bezier(.22,1,.36,1)) both}.section:nth-of-type(2){animation-delay:.08s}.section:nth-of-type(3){animation-delay:.15s}.card{position:relative;background:var(--surface);box-shadow:var(--shadow-sm);transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}.card::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 25%,rgb(255 255 255 / 22%) 50%,transparent 75%);transform:translateX(-120%);transition:transform .75s ease}.card:hover{transform:translateY(-7px);box-shadow:var(--shadow-md);border-color:rgb(99 91 255 / 20%)}.card:hover::after{transform:translateX(120%)}.image{overflow:hidden}.image img{transition:transform .55s var(--ease-out,cubic-bezier(.22,1,.36,1)),filter .35s ease}.card:hover .image img{transform:scale(1.05);filter:saturate(1.04)}@keyframes userHomeReveal{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.welcome,.section{animation:none}.card,.image img{transition:none}.card::after{display:none}}
+
+.welcome {
+  position: relative;
+  padding: clamp(24px, 4vw, 42px);
+  border: 1px solid rgb(255 255 255 / 65%);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgb(255 255 255 / 92%), rgb(246 247 252 / 82%));
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.welcome::before,
+.welcome::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.welcome::before {
+  width: 180px;
+  height: 180px;
+  top: -90px;
+  right: -60px;
+  background: radial-gradient(circle, rgb(99 91 255 / 18%), transparent 68%);
+  animation: userWelcomeOrb 7s ease-in-out infinite;
+}
+
+.welcome::after {
+  width: 120px;
+  height: 120px;
+  bottom: -70px;
+  left: 18%;
+  background: radial-gradient(circle, rgb(255 122 89 / 13%), transparent 70%);
+  animation: userWelcomeOrb 9s ease-in-out infinite reverse;
+}
+
+.card {
+  will-change: transform;
+}
+
+.card:nth-child(1) { animation-delay: 40ms; }
+.card:nth-child(2) { animation-delay: 90ms; }
+.card:nth-child(3) { animation-delay: 140ms; }
+.card:nth-child(4) { animation-delay: 190ms; }
+.card:nth-child(5) { animation-delay: 240ms; }
+.card:nth-child(6) { animation-delay: 290ms; }
+.card:nth-child(7) { animation-delay: 340ms; }
+.card:nth-child(8) { animation-delay: 390ms; }
+
+.section-header a {
+  position: relative;
+  transition: transform .25s ease, color .25s ease;
+}
+
+.section-header a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s var(--ease-out, cubic-bezier(.22, 1, .36, 1));
+}
+
+.section-header a:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.section-header a:hover::after {
+  transform: scaleX(1);
+}
+
+@keyframes userWelcomeOrb {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-14px, 14px, 0) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome::before,
+  .welcome::after,
+  .card,
+  .section-header a {
+    animation: none;
+    transition: none;
+  }
+}

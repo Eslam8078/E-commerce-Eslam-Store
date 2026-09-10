@@ -1,0 +1,14 @@
+.hint,.error{text-align:center;padding:48px;color:var(--muted)}.error{color:#b42332}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}.card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:20px;padding:19px;box-shadow:var(--shadow-sm);transition:.28s ease;animation:fadeUp .45s ease both}.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}.card-header{display:flex;justify-content:space-between;align-items:center;gap:10px}.stars{color:#f5a623;letter-spacing:2px}.status{font-size:.7rem;padding:5px 9px;border-radius:999px;text-transform:capitalize;font-weight:800}.status-pending{background:#fff5d8;color:#9a6700}.status-approved{background:#e7f8ee;color:#13733c}.status-declined{background:#ffeaed;color:#b42332}.message{color:#3f4655;line-height:1.75;min-height:60px}.date{color:var(--muted);font-size:.78rem}.delete-btn{margin-top:10px;width:100%;border:1px solid rgba(220,60,75,.18);border-radius:11px;padding:10px;background:rgba(220,60,75,.06);color:#b42332;font-weight:800;cursor:pointer}.delete-btn:hover{background:#dc3c4b;color:#fff;transform:translateY(-2px)}
+
+.card {
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes userTestimonialIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; }
+}

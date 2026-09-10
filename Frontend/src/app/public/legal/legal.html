@@ -1,0 +1,20 @@
+<section class="legal-page">
+  <div class="legal-card">
+    <span class="eyebrow">Eslam Store</span>
+    <h1>{{ title }}</h1>
+
+    @if (type === 'terms') {
+      <p>These terms explain the basic rules for using Eslam Store, placing orders, and using our customer services.</p>
+      <h2>Orders</h2>
+      <p>Orders are subject to product availability, address validation, and the store order workflow shown at checkout.</p>
+      <h2>Returns & refunds</h2>
+      <p>Refund requests are reviewed through the order system and are handled according to the status and refund workflow.</p>
+    } @else {
+      <p>We use the information required to create accounts, process orders, provide support, and improve the shopping experience.</p>
+      <h2>Account information</h2>
+      <p>Your account details are used to authenticate you and manage your orders, addresses, and notifications.</p>
+      <h2>Security</h2>
+      <p>Authentication credentials are protected and sensitive configuration values are kept outside the application source code.</p>
+    }
+  </div>
+</section>

@@ -1,0 +1,65 @@
+<div class="profile-page">
+  <div class="tabs">
+    <a routerLink="/user/profile" class="tab active">Personal Info</a>
+    <a routerLink="/user/profile/addresses" class="tab">Addresses</a>
+  </div>
+
+  @if (isLoading) {
+    <p class="hint">Loading profile...</p>
+  } @else {
+    <form class="form-card" [formGroup]="profileForm" (ngSubmit)="save()">
+      <div class="form-row">
+        <label>Email</label>
+        <input type="text" [value]="user?.email" disabled />
+      </div>
+
+      <div class="form-row">
+        <label for="name">Full Name</label>
+        <input id="name" type="text" formControlName="name" />
+        @if (name?.touched && name?.hasError('required')) {
+          <small>Name is required</small>
+        }
+      </div>
+
+      <div class="form-row">
+        <label for="mobilePhone">Mobile Phone</label>
+        <input id="mobilePhone" type="text" formControlName="mobilePhone" placeholder="01xxxxxxxxx" />
+        @if (mobilePhone?.touched && mobilePhone?.hasError('pattern')) {
+          <small>Enter a valid Egyptian mobile number</small>
+        }
+      </div>
+
+      <div class="form-row">
+        <label for="nationalId">National ID</label>
+        <input id="nationalId" type="text" formControlName="nationalId" placeholder="14-digit national ID" />
+        @if (nationalId?.touched && nationalId?.hasError('pattern')) {
+          <small>National ID must be 14 digits</small>
+        }
+        <small class="hint">Required before placing an order</small>
+      </div>
+
+      <div class="form-row">
+        <label for="gender">Gender</label>
+        <select id="gender" formControlName="gender">
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="DOB">Date of Birth</label>
+        <input id="DOB" type="date" formControlName="DOB" />
+      </div>
+
+      @if (errorMessage) {
+        <div class="alert error">{{ errorMessage }}</div>
+      }
+      @if (successMessage) {
+        <div class="alert success">{{ successMessage }}</div>
+      }
+
+      <button type="submit" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Changes' }}</button>
+    </form>
+  }
+</div>

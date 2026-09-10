@@ -1,0 +1,164 @@
+<div class="list-products">
+  <div class="filters">
+    <input type="text" placeholder="Search products..." [(ngModel)]="search" (keyup.enter)="applyFilters()" />
+
+    <select [(ngModel)]="categoryId" (ngModelChange)="onCategoryChange()">
+      <option value="">All Categories</option>
+      @for (cat of categories; track cat._id) {
+        <option [ngValue]="cat._id">{{ cat.name }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="season" (ngModelChange)="applyFilters()">
+      <option value="">All Seasons</option>
+      <option value="summer">Summer</option>
+      <option value="winter">Winter</option>
+      <option value="spring">Spring</option>
+      <option value="autumn">Autumn</option>
+      <option value="all">All Season</option>
+    </select>
+
+    <select [(ngModel)]="subCategoryId" (ngModelChange)="applyFilters()" [disabled]="!categoryId">
+      <option value="">All Subcategories</option>
+      @for (sub of subcategories; track sub._id) {
+        <option [value]="sub._id">{{ sub.name }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="order" (ngModelChange)="applyFilters()">
+      <option value="desc">Newest first</option>
+      <option value="asc">Oldest first</option>
+    </select>
+
+    <button type="button" (click)="applyFilters()">Filter</button>
+    @if (season && season !== "all") {
+      <div class="season-actions">
+        <button type="button" class="season-btn season-btn-danger" (click)="deactivateSeason()">Deactivate {{ season }} products</button>
+        <button type="button" class="season-btn season-btn-success" (click)="activateSeason()">Activate {{ season }} products</button>
+      </div>
+    }
+    <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+      <option value="all">All</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+      <option value="deleted">Deleted</option>
+    </select>
+
+    <button type="button" class="ghost" (click)="resetFilters()">Reset</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <p class="hint">Loading products...</p>
+  } @else if (products.length === 0) {
+    <p class="hint">No products found.</p>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Status</th>
+          <th>Best Seller</th>
+          <th>New Arrival</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products; track product._id) {
+          <tr>
+            <td>
+              @if (image(product.images)) {
+                <img class="thumb" [src]="image(product.images)" [alt]="product.name" />
+              }
+            </td>
+            <td>{{ product.name }}</td>
+            <td>{{ categoryName(product.categoryId) }}</td>
+            <td>{{ product.price | number }} EGP</td>
+            <td>{{ product.stockQuantity }}</td>
+            <td>
+              <span class="status" [class.active]="product.isActive && !product.isDeleted" [class.inactive]="!product.isActive || product.isDeleted">
+                {{ product.isDeleted ? 'Deleted' : (product.isActive ? 'Active' : 'Inactive') }}
+              </span>
+            </td>
+            <td>
+              @if (!product.isDeleted) {
+                <button type="button" class="btn-sm" [disabled]="actionLoadingId === product._id" (click)="toggleBestSeller(product)">
+                  {{ product.isBestSeller ? 'Remove' : 'Make Best Seller' }}
+                </button>
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+            <td>
+              @if (!product.isDeleted) {
+                <button type="button" class="btn-sm" [disabled]="actionLoadingId === product._id" (click)="toggleNewArrival(product)">
+                  {{ product.isNewArrival ? 'Remove' : 'Make New Arrival' }}
+                </button>
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+            <td class="actions">
+              @if (!product.isDeleted) {
+                              <a [routerLink]="['/admin/products/update', product._id]" class="btn-sm">Edit</a>
+              }
+
+              @if (product.isDeleted) {
+                <button
+                  type="button"
+                  class="btn-sm"
+                  [disabled]="actionLoadingId === product._id"
+                  (click)="restoreProduct(product)"
+                >
+                  Restore
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  class="btn-sm"
+                  [disabled]="actionLoadingId === product._id"
+                  (click)="toggleActive(product)"
+                >
+                  {{ product.isActive ? 'Deactivate' : 'Activate' }}
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-sm danger"
+                  [disabled]="actionLoadingId === product._id"
+                  (click)="deleteProduct(product)"
+                >
+                  Delete
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button type="button" [disabled]="page <= 1" (click)="goToPage(page - 1)">Previous</button>
+      <span>Page {{ page }} of {{ totalPages }} ({{ total }} products)</span>
+      <button type="button" [disabled]="page >= totalPages" (click)="goToPage(page + 1)">Next</button>
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  [title]="confirmTitle"
+  [message]="confirmMessage"
+  [confirmText]="confirmButtonText"
+  cancelText="Cancel"
+  [danger]="true"
+  (confirmed)="confirmAction === 'activate-season' ? confirmActivateSeason() : confirmAction === 'deactivate-season' ? confirmDeactivateSeason() : confirmDeleteProduct()"
+  (cancelled)="closeConfirm()"
+/>

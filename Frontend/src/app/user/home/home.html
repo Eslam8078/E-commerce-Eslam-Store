@@ -1,0 +1,49 @@
+<section class="welcome">
+  <h1>Welcome back, {{ authService.getUser()?.name }}!</h1>
+  <p>Here's what's new in the store.</p>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2>New Arrivals</h2>
+    <a routerLink="/user/products">Browse all products</a>
+  </div>
+
+  <div class="grid">
+    @for (product of newArrivals; track product._id) {
+      <a [routerLink]="['/user/products', product.slug]" class="card">
+        <div class="image">
+          @if (image(product.images)) {
+            <img [src]="image(product.images)" [alt]="product.name" />
+          }
+        </div>
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | number }} EGP</p>
+      </a>
+    } @empty {
+      <p class="empty">No new arrivals yet.</p>
+    }
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2>Best Sellers</h2>
+  </div>
+
+  <div class="grid">
+    @for (product of topSales; track product._id) {
+      <a [routerLink]="['/user/products', product.slug]" class="card">
+        <div class="image">
+          @if (image(product.images)) {
+            <img [src]="image(product.images)" [alt]="product.name" />
+          }
+        </div>
+        <h3>{{ product.name }}</h3>
+        <p class="price">{{ product.price | number }} EGP</p>
+      </a>
+    } @empty {
+      <p class="empty">No sales data yet.</p>
+    }
+  </div>
+</section>

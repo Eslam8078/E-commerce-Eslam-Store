@@ -1,0 +1,58 @@
+<section class="contact-page">
+  <div class="contact-shell">
+    <div class="contact-hero">
+      <span class="eyebrow">We are here to help</span>
+      <h1>Let’s talk.</h1>
+      <p>Have a question about a product, order, delivery, or your shopping experience? Send us a message and we’ll get back to you.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="info-card">
+          <div class="info-icon"><i class="bi bi-headset"></i></div>
+          <div><span class="info-label">Support</span><h3>Customer Care</h3><p>Friendly help for orders, products, and delivery questions.</p></div>
+        </div>
+
+        <a class="info-card info-link" href="mailto:eslamaymn2412@gmail.com">
+          <div class="info-icon"><i class="bi bi-envelope"></i></div>
+          <div><span class="info-label">Email</span><h3>eslamaymn2412@gmail.com</h3><p>Send us your question directly by email.</p></div>
+        </a>
+
+        <div class="info-card">
+          <div class="info-icon"><i class="bi bi-clock"></i></div>
+          <div><span class="info-label">Hours</span><h3>Sat – Thu</h3><p>9:00 AM – 9:00 PM</p></div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon"><i class="bi bi-geo-alt"></i></div>
+          <div><span class="info-label">Location</span><h3>Cairo, Egypt</h3><p>Serving customers across Egypt.</p></div>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <div class="form-heading">
+          <span class="eyebrow">Message us</span>
+          <h2>Send a message</h2>
+          <p>Your message will be addressed to eslamaymn2412@gmail.com in your email app.</p>
+        </div>
+
+        <form class="contact-form" (ngSubmit)="submit()">
+          <div class="form-row">
+            <label>Name<input name="name" [(ngModel)]="name" placeholder="Your name" required></label>
+            <label>Email<input name="email" type="email" [(ngModel)]="email" placeholder="you@example.com" required></label>
+          </div>
+
+          <label>Message<textarea name="message" rows="7" [(ngModel)]="message" placeholder="How can we help you?" required></textarea></label>
+
+          <button type="submit" [disabled]="!name.trim() || !email.trim() || !message.trim()">
+            Send Message <i class="bi bi-arrow-up-right"></i>
+          </button>
+
+          @if (sent) {
+            <p class="sent"><i class="bi bi-check-circle"></i> Your email app has been opened.</p>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

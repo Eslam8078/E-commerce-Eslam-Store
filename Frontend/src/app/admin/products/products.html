@@ -1,0 +1,30 @@
+<div class="products-page">
+
+  <div class="products-header">
+    <div>
+      <h2>Products</h2>
+
+      <p>Manage your store products</p>
+    </div>
+
+    <a routerLink="/admin/products/add" class="add-product-btn"> Add Product </a>
+  </div>
+
+  <nav class="products-nav">
+    <a
+      routerLink="/admin/products/list"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{
+        exact: true,
+      }"
+    >
+      All Products
+    </a>
+
+    <a routerLink="/admin/products/add" routerLinkActive="active"> Add Product </a>
+  </nav>
+
+  <section class="products-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

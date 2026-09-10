@@ -1,0 +1,19 @@
+<div class="admin-layout">
+  <app-aside></app-aside>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <h1>Admin Dashboard</h1>
+      </div>
+
+      <div class="topbar-right">
+        <a routerLink="/admin/notifications" class="notif-link">Notifications</a>
+      </div>
+    </header>
+
+    <section class="admin-content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

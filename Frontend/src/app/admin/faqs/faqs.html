@@ -1,0 +1,121 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>FAQs</h2>
+      <p>Manage frequently asked questions</p>
+    </div>
+
+    <div class="header-actions">
+      <label class="filter-field">
+        <span>Status</span>
+        <select [(ngModel)]="statusFilter" (ngModelChange)="page = 1; load()">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="deleted">Deleted</option>
+        </select>
+      </label>
+      <button type="button" class="add-btn" (click)="showForm ? cancelForm() : startAdd()">
+        {{ showForm ? 'Cancel' : '+ Add FAQ' }}
+      </button>
+    </div>
+  </div>
+
+  @if (showForm) {
+    <form class="faq-form" (ngSubmit)="submitForm()">
+      <div class="form-row">
+        <label for="question">Question</label>
+        <input id="question" type="text" [(ngModel)]="form.question" name="question" required />
+      </div>
+
+      <div class="form-row">
+        <label for="answer">Answer</label>
+        <textarea id="answer" rows="3" [(ngModel)]="form.answer" name="answer" required></textarea>
+      </div>
+
+      @if (formError) {
+        <div class="alert">{{ formError }}</div>
+      }
+
+      <button type="submit" [disabled]="isSaving">
+        {{ isSaving ? 'Saving...' : editingId ? 'Update FAQ' : 'Create FAQ' }}
+      </button>
+    </form>
+  }
+
+  @if (errorMessage) {
+    <div class="alert">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <p class="hint">Loading FAQs...</p>
+  } @else if (faqs.length === 0) {
+    <p class="hint">No FAQs found.</p>
+  } @else {
+    <div class="faq-list">
+      @for (faq of faqs; track faq._id) {
+        <div class="faq-card">
+          <div class="faq-card-header">
+            <h4>{{ faq.question }}</h4>
+            <span class="status" [class.active]="faq.isActive && !faq.isDeleted" [class.inactive]="!faq.isActive || faq.isDeleted">
+              {{ faq.isDeleted ? 'Deleted' : (faq.isActive ? 'Active' : 'Inactive') }}
+            </span>
+          </div>
+
+          <p class="faq-answer">{{ faq.answer }}</p>
+
+          <div class="faq-actions">
+            <button type="button" class="btn-sm" [disabled]="faq.isDeleted" (click)="startEdit(faq)">Edit</button>
+            @if (faq.isDeleted) {
+              <button
+                type="button"
+                class="btn-sm"
+                [disabled]="actionLoadingId === faq._id"
+                (click)="restore(faq)"
+              >
+                Restore
+              </button>
+            } @else {
+              <button
+                type="button"
+                class="btn-sm"
+                [disabled]="actionLoadingId === faq._id"
+                (click)="toggleActive(faq)"
+              >
+                {{ faq.isActive ? 'Deactivate' : 'Activate' }}
+              </button>
+
+              <button
+                type="button"
+                class="btn-sm danger"
+                [disabled]="actionLoadingId === faq._id"
+                (click)="requestDelete(faq)"
+              >
+                Delete
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (totalPages > 1) {
+    <div class="pagination">
+      <button type="button" [disabled]="page <= 1" (click)="goToPage(page - 1)">Previous</button>
+      <span>Page {{ page }} of {{ totalPages }} ({{ total }} FAQs)</span>
+      <button type="button" [disabled]="page >= totalPages" (click)="goToPage(page + 1)">Next</button>
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  title="Delete FAQ"
+  [message]="pendingDelete ? 'Delete this FAQ? It will remain recoverable.' : 'Delete FAQ?'"
+  confirmText="Delete"
+  cancelText="Cancel"
+  [danger]="true"
+  (confirmed)="confirmDelete()"
+  (cancelled)="closeConfirm()"
+/>

@@ -1,0 +1,106 @@
+<div class="profile-page">
+  <div class="tabs">
+    <a routerLink="/user/profile" class="tab">Personal Info</a>
+    <a routerLink="/user/profile/addresses" class="tab active">Addresses</a>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert error">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <p class="hint">Loading addresses...</p>
+  } @else {
+    <div class="address-list">
+      @for (addr of addresses; track addr._id) {
+        <div class="address-card">
+          <div>
+            <strong>{{ addr.label }}</strong>
+            <p>{{ addr.address || addr.street }}, {{ addr.city }}, {{ addr.governorate }}</p>
+          </div>
+          <div class="address-actions">
+            <button type="button" class="default-btn" [disabled]="addr.isDefault || actionLoadingId === addr._id" (click)="setDefaultAddress(addr)">
+              {{ addr.isDefault ? 'Default' : 'Set as default' }}
+            </button>
+            <button type="button" class="delete-btn" [disabled]="actionLoadingId === addr._id" (click)="deleteAddress(addr)">
+              Delete
+            </button>
+          </div>
+        </div>
+      } @empty {
+        <p class="hint">No saved addresses yet.</p>
+      }
+    </div>
+
+    @if (!showForm) {
+      <button type="button" class="add-btn" (click)="toggleForm()">+ Add New Address</button>
+    } @else {
+      <form class="form-card" [formGroup]="addressForm" (ngSubmit)="addAddress()">
+        <div class="form-row">
+          <label for="label">Label</label>
+          <input id="label" type="text" formControlName="label" placeholder="e.g. Home, Work" />
+          @if (label?.touched && label?.hasError('required')) {
+            <small>Label is required</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <label for="address">Street Address</label>
+          <input id="address" type="text" formControlName="address" />
+          @if (address?.touched && address?.hasError('required')) {
+            <small>Address is required</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <label for="governorate">Governorate</label>
+          <select id="governorate" formControlName="governorate" (change)="updateCities()">
+            <option value="">Select Governorate</option>
+            @for (location of deliveryLocations; track location.governorate) {
+              <option [value]="location.governorate">{{ location.governorate }}</option>
+            }
+          </select>
+          @if (governorate?.touched && governorate?.hasError('required')) {
+            <small>Governorate is required</small>
+          }
+        </div>
+
+        <div class="form-row">
+          <label for="city">City</label>
+          <select id="city" formControlName="city" [disabled]="!governorate?.value" (change)="updateDeliveryFee()">
+            <option value="">Select City</option>
+            @for (cityName of cities; track cityName) {
+              <option [value]="cityName">{{ cityName }}</option>
+            }
+          </select>
+          @if (city?.touched && city?.hasError('required')) {
+            <small>City is required</small>
+          }
+
+          @if (deliveryFee !== null) {
+            <div class="delivery-fee-preview">
+              <span>Delivery fee</span>
+              <strong>{{ deliveryFee | number }} EGP</strong>
+            </div>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="isSaving">{{ isSaving ? 'Saving...' : 'Save Address' }}</button>
+          <button type="button" class="ghost" (click)="toggleForm()">Cancel</button>
+        </div>
+      </form>
+    }
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  title="Delete address"
+  [message]="'Delete ' + pendingDeleteLabel + '?'"
+  confirmText="Delete"
+  cancelText="Cancel"
+  [danger]="true"
+  (confirmed)="confirmDeleteAddress()"
+  (cancelled)="closeConfirm()"
+/>

@@ -1,0 +1,146 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>Users</h2>
+      <p>Manage customer and admin accounts</p>
+    </div>
+    <button type="button" class="add-admin-btn" (click)="showAddAdmin = !showAddAdmin">
+      {{ showAddAdmin ? 'Close' : '+ Add Admin' }}
+    </button>
+  </div>
+
+  @if (showAddAdmin) {
+    <div class="add-admin-form">
+      <div class="form-row">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="adminForm.name" />
+      </div>
+      <div class="form-row">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="adminForm.email" />
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        <input type="password" [(ngModel)]="adminForm.password" />
+      </div>
+      <div class="form-row">
+        <label>Gender</label>
+        <select [(ngModel)]="adminForm.gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Date of birth</label>
+        <input type="date" [(ngModel)]="adminForm.DOB" />
+      </div>
+      <button type="button" (click)="addAdmin()" [disabled]="isLoading">Create Admin</button>
+    </div>
+  }
+
+  <div class="filters">
+    <input type="text" placeholder="Search by name or email..." [(ngModel)]="search" (keyup.enter)="applyFilters()" />
+
+    <select [(ngModel)]="role" (ngModelChange)="applyFilters()">
+      <option value="">All Roles</option>
+      <option value="customer">Customer</option>
+      <option value="admin">Admin</option>
+    </select>
+
+    <select [(ngModel)]="accountStatus" (ngModelChange)="applyFilters()">
+      <option value="all">All statuses</option>
+      <option value="active">Active only</option>
+      <option value="blocked">Blocked only</option>
+      <option value="deleted">Deleted only</option>
+    </select>
+
+    <button type="button" (click)="applyFilters()">Search</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert">{{ errorMessage }}</div>
+  }
+
+  @if (isLoading) {
+    <p class="hint">Loading users...</p>
+  } @else if (users.length === 0) {
+    <p class="hint">No users found.</p>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user._id) {
+          <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td class="capitalize">{{ user.role }}</td>
+            <td>{{ user.mobilePhone || '-' }}</td>
+            <td>
+              <span class="status" [class.active]="!user.isBlocked && !user.isDeleted" [class.inactive]="user.isBlocked || user.isDeleted">
+                {{ user.isDeleted ? 'Deleted' : (user.isBlocked ? 'Blocked' : 'Active') }}
+              </span>
+            </td>
+            <td class="actions">
+              @if (user.role !== 'admin') {
+                @if (user.isDeleted) {
+                  <button
+                    type="button"
+                    class="btn-sm"
+                    [disabled]="actionLoadingId === user._id"
+                    (click)="restoreUser(user)"
+                  >
+                    Restore
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="btn-sm"
+                    [disabled]="actionLoadingId === user._id"
+                    (click)="toggleBlock(user)"
+                  >
+                    {{ user.isBlocked ? 'Unblock' : 'Block' }}
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn-sm danger"
+                    [disabled]="actionLoadingId === user._id"
+                    (click)="deleteUser(user)"
+                  >
+                    Delete
+                  </button>
+                }
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button type="button" [disabled]="page <= 1" (click)="goToPage(page - 1)">Previous</button>
+      <span>Page {{ page }} of {{ totalPages }} ({{ total }} users)</span>
+      <button type="button" [disabled]="page >= totalPages" (click)="goToPage(page + 1)">Next</button>
+    </div>
+  }
+</div>
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  title="Delete user"
+  [message]="'Delete user ' + pendingDeleteName + '?'"
+  confirmText="Delete"
+  cancelText="Cancel"
+  [danger]="true"
+  (confirmed)="confirmDeleteUser()"
+  (cancelled)="closeConfirm()"
+/>

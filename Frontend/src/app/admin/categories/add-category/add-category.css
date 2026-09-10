@@ -1,0 +1,74 @@
+.form-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 480px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.form-group small {
+  color: #d9534f;
+  font-size: 0.8rem;
+}
+
+.alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.alert.error {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.alert.success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.form-actions button[type='submit'] {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  background: #212529;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-actions button.ghost {
+  padding: 10px 22px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

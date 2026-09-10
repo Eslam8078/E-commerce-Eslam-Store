@@ -1,0 +1,20 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>Subcategories</h2>
+      <p>Manage product subcategories</p>
+    </div>
+    <a routerLink="/admin/subcategories/add" class="add-btn">+ Add Subcategory</a>
+  </div>
+
+  <nav class="page-nav">
+    <a routerLink="/admin/subcategories/list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      All Subcategories
+    </a>
+    <a routerLink="/admin/subcategories/add" routerLinkActive="active">Add Subcategory</a>
+  </nav>
+
+  <section class="page-content">
+    <router-outlet></router-outlet>
+  </section>
+</div>

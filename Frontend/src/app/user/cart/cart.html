@@ -1,0 +1,79 @@
+@if (isLoading) {
+  <p class="hint">Loading cart...</p>
+} @else if (errorMessage) {
+  <p class="error">{{ errorMessage }}</p>
+} @else if (!cart || cart.items.length === 0) {
+  <div class="empty-cart">
+    <p>Your cart is empty.</p>
+    <a routerLink="/user/products" class="shop-btn">Continue Shopping</a>
+  </div>
+} @else {
+  <div class="cart-page">
+    <div class="cart-items">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button type="button" class="clear-btn" (click)="clearCart()">Clear Cart</button>
+      </div>
+
+      @for (item of cart.items; track productId(item)) {
+        <div class="cart-item">
+          <div class="thumb">
+            @if (productImage(item)) {
+              <img [src]="productImage(item)" [alt]="productName(item)" />
+            }
+          </div>
+
+          <div class="details">
+            <a [routerLink]="['/user/products', productSlug(item)]" class="name">{{ productName(item) }}</a>
+
+            @if (item.isPriceChanged) {
+              <p class="price-warning">
+                Price changed to {{ item.currentPrice | number }} EGP
+                <button type="button" class="confirm-price-btn" [disabled]="actionLoadingId === productId(item)" (click)="confirmPrice(item)">
+                  Update price
+                </button>
+              </p>
+            }
+
+            <p class="unit-price">{{ item.priceAtOrder | number }} EGP</p>
+          </div>
+
+          <div class="qty-selector">
+            <button type="button" [disabled]="actionLoadingId === productId(item)" (click)="updateQuantity(item, item.quantity - 1)">−</button>
+            <span>{{ item.quantity }}</span>
+            <button type="button" [disabled]="actionLoadingId === productId(item)" (click)="updateQuantity(item, item.quantity + 1)">+</button>
+          </div>
+
+          <p class="line-total">{{ item.priceAtOrder * item.quantity | number }} EGP</p>
+
+          <button type="button" class="remove-btn" [disabled]="actionLoadingId === productId(item)" (click)="removeItem(item)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      }
+    </div>
+
+    <aside class="summary">
+      <h3>Order Summary</h3>
+      <div class="summary-row">
+        <span>Total</span>
+        <strong>{{ cart.totalPrice | number }} EGP</strong>
+      </div>
+      <button type="button" class="checkout-btn" [disabled]="hasPriceChanges()" (click)="goToCheckout()">Proceed to Checkout</button>
+      @if (hasPriceChanges()) {
+        <p class="price-warning">Confirm the updated prices above before checkout</p>
+      }
+    </aside>
+  </div>
+}
+
+<app-confirm-dialog
+  [open]="confirmOpen"
+  title="Clear cart"
+  message="Remove all products from your cart?"
+  confirmText="Clear cart"
+  cancelText="Keep items"
+  [danger]="true"
+  (confirmed)="confirmClearCart()"
+  (cancelled)="closeConfirm()"
+/>
