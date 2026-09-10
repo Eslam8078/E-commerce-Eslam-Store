@@ -1,0 +1,22 @@
+<section class="panel notification-panel">
+  <div class="panel-header-row">
+    <div><h3>Order Notifications</h3><p class="panel-subtitle">Unread and read order notifications</p></div>
+    <button type="button" class="refresh-btn" (click)="refresh.emit()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+  </div>
+  @if (notifications.length === 0) {
+    <p class="hint">No order notifications.</p>
+  } @else {
+    <div class="notification-list" [class.loading-state]="loading">
+      @for (notification of notifications; track notification._id) {
+        <button type="button" class="notification-item" [class.unread]="!notification.isRead" [class.read]="notification.isRead" (click)="notificationSelected.emit(notification)">
+          <div class="notification-icon"><i class="bi bi-bag-check"></i></div>
+          <div class="notification-copy">
+            <div class="notification-title-row"><p class="notification-title">New Order</p><span class="notification-status" [class.unread-status]="!notification.isRead">{{ notification.isRead ? 'Read' : 'Unread' }}</span></div>
+            <p class="notification-message">{{ notification.message }}</p>
+          </div>
+          @if (notification.createdAt) { <time [attr.datetime]="notification.createdAt">{{ notification.createdAt | date:'short' }}</time> }
+        </button>
+      }
+    </div>
+  }
+</section>

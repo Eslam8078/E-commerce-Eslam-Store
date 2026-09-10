@@ -1,10 +1,9 @@
-<div class="page">
+<div class="page dashboard-page">
   <div class="page-header">
     <div>
       <h2>Dashboard</h2>
       <p>Overview of store performance</p>
     </div>
-
     <div class="date-filters">
       <input type="date" [(ngModel)]="fromDate" />
       <span>to</span>
@@ -17,133 +16,19 @@
     <div class="alert">{{ errorMessage }}</div>
   }
 
-  <section class="panel notification-panel">
-    <div class="panel-header-row">
-      <div>
-        <h3>Order Notifications</h3>
-        <p class="panel-subtitle">Unread and read order notifications</p>
-      </div>
-      <button type="button" class="refresh-btn" (click)="loadNewOrderNotifications()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
-    </div>
+  <app-list-notifications
+    [notifications]="newOrderNotifications"
+    [loading]="isLoading"
+    (refresh)="loadNewOrderNotifications()"
+    (notificationSelected)="openOrderNotification($event)"
+  />
 
-    @if (newOrderNotifications.length === 0) {
-      <p class="hint">No order notifications.</p>
-    } @else {
-      <div class="notification-list" [class.loading-state]="isLoading">
-        @for (notification of newOrderNotifications; track notification._id) {
-          <button
-            type="button"
-            class="notification-item"
-            [class.unread]="!notification.isRead"
-            [class.read]="notification.isRead"
-            (click)="openOrderNotification(notification)"
-          >
-            <div class="notification-icon">
-              <i class="bi bi-bag-check"></i>
-            </div>
-
-            <div class="notification-copy">
-              <div class="notification-title-row">
-                <p class="notification-title">New Order</p>
-                <span class="notification-status" [class.unread-status]="!notification.isRead">
-                  {{ notification.isRead ? 'Read' : 'Unread' }}
-                </span>
-              </div>
-              <p class="notification-message">{{ notification.message }}</p>
-            </div>
-
-            @if (notification.createdAt) {
-              <time [attr.datetime]="notification.createdAt">
-                {{ notification.createdAt | date:'short' }}
-              </time>
-            }
-          </button>
-        }
-      </div>
-    }
-  </section>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <p class="stat-label">Net Revenue</p>
-      <p class="stat-value">{{ revenue?.totalRevenue || 0 | number }} EGP</p>
-    </div>
-    <div class="stat-card">
-      <p class="stat-label">Total Orders</p>
-      <p class="stat-value">{{ revenue?.totalOrders || 0 }}</p>
-    </div>
-  </div>
+  <app-dashboard-stats [revenue]="revenue" />
 
   <div class="two-col">
-    <section class="panel">
-      <h3>Top Products (selected range)</h3>
-
-      @if (topProducts.length === 0) {
-        <p class="hint">No data for this range.</p>
-      } @else {
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Qty Sold</th>
-              <th>Revenue</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (p of topProducts; track p.productId) {
-              <tr>
-                <td>{{ p.name }}</td>
-                <td>{{ p.totalQuantity }}</td>
-                <td>{{ p.totalSales | number }} EGP</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      }
-    </section>
-
-    <section class="panel">
-      <h3>Best Sellers (all time)</h3>
-
-      @if (topSales.length === 0) {
-        <p class="hint">No sales data yet.</p>
-      } @else {
-        <ul class="mini-list">
-          @for (p of topSales; track p._id) {
-            <li>
-              @if (image(p.images)) {
-                <img [src]="image(p.images)" [alt]="p.name" />
-              }
-              <div>
-                <p class="name">{{ p.name }}</p>
-                <p class="sub">{{ p.totalQuantity }} sold · stock {{ p.stockQuantity }}</p>
-              </div>
-            </li>
-          }
-        </ul>
-      }
-    </section>
+    <app-list-top-products [products]="topProducts" />
+    <app-list-best-sellers [products]="topSales" [staticURL]="staticURL" />
   </div>
 
-  <section class="panel">
-    <h3>New Arrivals</h3>
-
-    @if (isLoading) {
-      <p class="hint">Loading...</p>
-    } @else if (newArrivals.length === 0) {
-      <p class="hint">No new arrivals.</p>
-    } @else {
-      <div class="arrivals-grid">
-        @for (p of newArrivals; track p._id) {
-          <div class="arrival-card">
-            @if (image(p.images)) {
-              <img [src]="image(p.images)" [alt]="p.name" />
-            }
-            <p class="name">{{ p.name }}</p>
-            <p class="sub">{{ p.price | number }} EGP</p>
-          </div>
-        }
-      </div>
-    }
-  </section>
+  <app-list-new-arrivals [products]="newArrivals" [staticURL]="staticURL" />
 </div>
