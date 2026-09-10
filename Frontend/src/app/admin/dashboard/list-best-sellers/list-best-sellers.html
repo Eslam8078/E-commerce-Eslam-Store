@@ -1,1 +1,20 @@
-<section class="panel"><h3>Best Sellers (all time)</h3>@if(products.length===0){<p class="hint">No sales data yet.</p>}@else{<ul class="mini-list">@for(p of products; track p._id){<li>@if(p.images?.length){<img [src]="staticURL + p.images[0]" [alt]="p.name"/>}<div><p class="name">{{p.name}}</p><p class="sub">{{p.totalQuantity}} sold · stock {{p.stockQuantity}}</p></div></li>}</ul>}</section>
+<section class="panel">
+  <h3>Best Sellers (all time)</h3>
+  @if (products.length === 0) {
+    <p class="hint">No sales data yet.</p>
+  } @else {
+    <ul class="mini-list">
+      @for (p of products; track p._id) {
+        <li>
+          @if (p.images?.length) {
+            <img [src]="staticURL + p.images[0]" [alt]="p.name" />
+          }
+          <div>
+            <p class="name">{{ p.name }}</p>
+            <p class="sub">{{ p.totalQuantity }} sold · stock {{ p.stockQuantity }}</p>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

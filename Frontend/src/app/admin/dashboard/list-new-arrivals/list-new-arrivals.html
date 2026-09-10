@@ -1,1 +1,18 @@
-<section class="panel"><h3>New Arrivals</h3>@if(products.length===0){<p class="hint">No new arrivals.</p>}@else{<div class="arrivals-grid">@for(p of products; track p._id){<div class="arrival-card">@if(p.images?.length){<img [src]="staticURL + p.images[0]" [alt]="p.name"/>}<p class="name">{{p.name}}</p><p class="sub">{{p.price | number}} EGP</p></div>}</div>}</section>
+<section class="panel">
+  <h3>New Arrivals</h3>
+  @if (products.length === 0) {
+    <p class="hint">No new arrivals.</p>
+  } @else {
+    <div class="arrivals-grid">
+      @for (p of products; track p._id) {
+        <div class="arrival-card">
+          @if (p.images?.length) {
+            <img [src]="staticURL + p.images[0]" [alt]="p.name" />
+          }
+          <p class="name">{{ p.name }}</p>
+          <p class="sub">{{ p.price | number }} EGP</p>
+        </div>
+      }
+    </div>
+  }
+</section>
